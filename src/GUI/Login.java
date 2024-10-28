@@ -142,6 +142,8 @@ public class Login extends JFrame implements KeyListener {
 	
 	public void checkLogin() {
 		Main main = new Main();
+		AudioPlayer au = new AudioPlayer();
+		au.startAudio(1);
 		this.setVisible(false);
 		main.setVisible(true);
 	}
