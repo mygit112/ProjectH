@@ -18,6 +18,10 @@ import GUI.Panel.TrangChu;
 import Model.EventMenuSelected;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
 
 public class Main extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -50,13 +54,14 @@ public class Main extends JFrame {
 	public Main() {
 		mt = new MenuTaskbar();
 		
-		mt.setBounds(0, 0, 220, 746);
+		mt.setBounds(0, 0, 220, 1035);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1386, 768);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		contentPane.add(mt);
+		mt.setLayout(null);
 		mt.addEventMenuSelected(new EventMenuSelected() {
 
 			@Override

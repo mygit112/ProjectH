@@ -34,13 +34,16 @@ public class AddBenhNhan extends JFrame {
 	private sexCustom sex;
 	private DateCustom dcustom;
 	Color FontColor = new Color(96, 125, 139);
+	private JLabel lblTitle;
+	private JLabel lblAdd_Save;
+	private JLabel lblCancel;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddBenhNhan frame = new AddBenhNhan();
-					frame.setVisible(true);
+					// AddBenhNhan frame = new AddBenhNhan();
+				//	frame.setVisible(true);
 					// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -49,7 +52,7 @@ public class AddBenhNhan extends JFrame {
 		});
 	}
 
-	public AddBenhNhan() {
+	public AddBenhNhan(String type, String title) {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,22 +68,22 @@ public class AddBenhNhan extends JFrame {
 		panel.setBounds(0, 0, 895, 79);
 		contentPane.add(panel);
 		
-		JLabel lblNewLabel = new JLabel("THÊM BỆNH NHÂN");
-		lblNewLabel.setFont(new Font("SansSerif", Font.PLAIN, 30));
-		lblNewLabel.setForeground(new Color(255, 255, 255));
+		lblTitle = new JLabel(title);
+		lblTitle.setFont(new Font("SansSerif", Font.PLAIN, 30));
+		lblTitle.setForeground(new Color(255, 255, 255));
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addContainerGap(311, Short.MAX_VALUE)
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblTitle, GroupLayout.PREFERRED_SIZE, 293, GroupLayout.PREFERRED_SIZE)
 					.addGap(290))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(19)
-					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(lblTitle, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(21))
 		);
 		panel.setLayout(gl_panel);
@@ -182,19 +185,13 @@ public class AddBenhNhan extends JFrame {
 		lblNewLabel_1_9.setBounds(10, 337, 200, 37);
 		panel_1.add(lblNewLabel_1_9);
 		
-		
-		
 		JPanel pnAdd = new JPanel();
 		pnAdd.setBackground(new Color(0, 206, 209));
 		pnAdd.setBounds(748, 103, 136, 49);
 		contentPane.add(pnAdd);
 		pnAdd.setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("Thêm");
-		lblNewLabel_2.setForeground(new Color(255, 255, 255));
-		lblNewLabel_2.setFont(new Font("SansSerif", Font.PLAIN, 26));
-		lblNewLabel_2.setBounds(27, 0, 109, 49);
-		pnAdd.add(lblNewLabel_2);
+		
 		
 		JPanel pnCancel = new JPanel();
 		pnCancel.setBackground(new Color(255, 0, 51));
@@ -202,15 +199,49 @@ public class AddBenhNhan extends JFrame {
 		contentPane.add(pnCancel);
 		pnCancel.setLayout(null);
 		
-		JLabel lblNewLabel_2_1 = new JLabel("Huỷ bỏ");
-		lblNewLabel_2_1.setForeground(new Color(255, 255, 255));
-		lblNewLabel_2_1.setFont(new Font("SansSerif", Font.PLAIN, 26));
-		lblNewLabel_2_1.setBounds(24, 0, 112, 49);
-		pnCancel.add(lblNewLabel_2_1);
 		
-		// xu ly su kien bam nut
-		eventMouse(pnAdd, 1);
-		eventMouse(pnCancel, 2);
+		
+		
+		
+		
+		switch (type) {
+		case "them":
+			lblAdd_Save = new JLabel("Thêm");
+			lblAdd_Save.setForeground(new Color(255, 255, 255));
+			lblAdd_Save.setFont(new Font("SansSerif", Font.PLAIN, 26));
+			lblAdd_Save.setBounds(27, 0, 109, 49);
+			pnAdd.add(lblAdd_Save);
+		
+			lblCancel = new JLabel("Huỷ bỏ");
+			lblCancel.setForeground(new Color(255, 255, 255));
+			lblCancel.setFont(new Font("SansSerif", Font.PLAIN, 26));
+			lblCancel.setBounds(24, 0, 112, 49);
+			pnCancel.add(lblCancel);
+			
+			// xu ly su kien bam nut
+			eventMouse(pnAdd, 1);
+			eventMouse(pnCancel, 2);
+			break;
+		case "sua":
+			lblAdd_Save = new JLabel("Lưu");
+			lblAdd_Save.setForeground(new Color(255, 255, 255));
+			lblAdd_Save.setFont(new Font("SansSerif", Font.PLAIN, 26));
+			lblAdd_Save.setBounds(42, 0, 109, 49);
+			pnAdd.add(lblAdd_Save);
+		
+			lblCancel = new JLabel("Huỷ bỏ");
+			lblCancel.setForeground(new Color(255, 255, 255));
+			lblCancel.setFont(new Font("SansSerif", Font.PLAIN, 26));
+			lblCancel.setBounds(24, 0, 112, 49);
+			pnCancel.add(lblCancel);
+			
+			// xu ly su kien bam nut
+			eventMouse(pnAdd, 3);
+			eventMouse(pnCancel, 2);
+			break;
+		default:
+			break;
+		}
 		
 		this.setLocationRelativeTo(null);
 	}
@@ -256,6 +287,11 @@ public class AddBenhNhan extends JFrame {
 			this.setVisible(false);
 		}else if(i == 2) {
 			// huy bo
+			this.setVisible(false);
+			dispose();
+		}else if(i == 3) {
+			// luu thong tin da chinh sua(chua code)
+			System.out.println("meo");
 			this.setVisible(false);
 			dispose();
 		}

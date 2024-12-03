@@ -16,23 +16,25 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 
+import DAO.TaiKhoanDAO;
+import DTO.TaiKhoanDTO;
 import GUI.component.LoginComponent;
+import Model.BCrypt;
 
 public class Login extends JFrame implements KeyListener {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JPanel panel_3;
+	LoginComponent txtUsername, txtPassword;
 	
 	Color FontColor = new Color(96, 125, 139);
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -84,9 +86,9 @@ public class Login extends JFrame implements KeyListener {
 		contentPane.add(panel_2);
 		panel_2.setLayout(new GridLayout(2, 1));
 		
-		LoginComponent txtUsername = new LoginComponent("Tên đăng nhập");
+		txtUsername = new LoginComponent("Tên đăng nhập");
 		panel_2.add(txtUsername);
-        LoginComponent txtPassword = new LoginComponent("Mật khẩu", "password");
+		txtPassword = new LoginComponent("Mật khẩu", "password");
         panel_2.add(txtPassword);
 
 		
@@ -141,11 +143,38 @@ public class Login extends JFrame implements KeyListener {
 	}
 	
 	public void checkLogin() {
-		Main main = new Main();
-		AudioPlayer au = new AudioPlayer();
-		au.startAudio(1);
-		this.setVisible(false);
-		main.setVisible(true);
+//		Main main = new Main();
+//		AudioPlayer au = new AudioPlayer();
+//		au.startAudio(1);
+//		this.setVisible(false);
+//		main.setVisible(true);
+		String usernameCheck = txtUsername.getText();
+		String passworkCheck = txtPassword.getPass();
+		if(usernameCheck.equals("") || passworkCheck.equals("")) {
+			JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin!", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);	
+		}else {
+			TaiKhoanDTO tk = TaiKhoanDAO.getInstance().selectByUser(usernameCheck);
+			if(tk == null) {
+				JOptionPane.showMessageDialog(this, "Tài khoản của bạn không tồn tại trên hệ thống", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+			}else {
+				if(tk.getStatus() == 0) {
+					JOptionPane.showMessageDialog(this, "Tài khoản của bạn đang bị khóa", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+				}else {
+					if(BCrypt.checkpw(passworkCheck, tk.getPasswork())) {
+						try {
+							this.dispose();
+							Main main = new Main();
+							main.setVisible(true);
+						} catch (Exception e) {
+							Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, e);
+						}
+					}else {
+						JOptionPane.showMessageDialog(this, "Mật khẩu không đúng!", "Cảnh báo!", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+			
+		}
 	}
 	
 	private void pnlLogInMousePressed(java.awt.event.MouseEvent evt) throws UnsupportedLookAndFeelException {

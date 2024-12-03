@@ -28,8 +28,7 @@ public class QuanLyThuoc extends JPanel {
 	private DefaultTableModel model;
 	Color FontColor = new Color(96, 125, 139);
 	private SearchBar searchBar;
-	private AddBenhNhan adbn;
-	private MdfBenhNhan mdfbn;
+	private AddDonThuoc addDonThuoc;
 
 	public QuanLyThuoc() {
 		setBackground(new Color(240, 240, 240));
@@ -203,7 +202,6 @@ public class QuanLyThuoc extends JPanel {
         		pn.setForeground(Color.gray);
             }
             
-            // xu ly xu kien bam nut dang nhap
             @Override
             public void mousePressed(MouseEvent evt) {
                 try {
@@ -223,11 +221,11 @@ public class QuanLyThuoc extends JPanel {
 	
 	public void pnlLogInMousePressed(java.awt.event.MouseEvent evt, int i) throws UnsupportedLookAndFeelException {
         if(i == 1) {
-        	adbn = new AddBenhNhan();
-        	adbn.setVisible(true);
+        	addDonThuoc = new AddDonThuoc("them", "THÊM THUỐC");
+        	addDonThuoc.setVisible(true);
         }else if(i == 2) {
-        	mdfbn = new MdfBenhNhan();
-        	mdfbn.setVisible(true);
+        	addDonThuoc = new AddDonThuoc("sua", "SỬA THUỐC");
+        	addDonThuoc.setVisible(true);
         }else if(i == 3) {
         	
         }

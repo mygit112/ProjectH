@@ -34,7 +34,6 @@ public class LichSu extends JPanel {
 	Color FontColor = new Color(96, 125, 139);
 	private SearchBar searchBar;
 	private AddBenhNhan adbn;
-	private MdfBenhNhan mdfbn;
 
 	public LichSu() {
 		setBackground(new Color(240, 240, 240));

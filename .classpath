@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="gradient-icon-font.jar"/>
 	<classpathentry kind="lib" path="miglayout-4.0.jar"/>
 	<classpathentry kind="lib" path="TimingFramework-0.55.jar"/>
+	<classpathentry kind="lib" path="mysql-connector-java-8.0.30.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

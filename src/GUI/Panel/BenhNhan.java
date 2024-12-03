@@ -15,9 +15,13 @@ import java.awt.Font;
 import java.awt.Panel;
 
 import javax.swing.table.DefaultTableModel;
+
+import DTO.BenhNhanDTO;
+
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,13 +34,12 @@ public class BenhNhan extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Table table;
-	private DefaultTableModel model;
+	protected DefaultTableModel model;
 	Color FontColor = new Color(96, 125, 139);
 	private JPanel pnAdd;
 	private JPanel pnModify;
 	private SearchBar searchBar;
 	private AddBenhNhan addbn;
-	private MdfBenhNhan mdfbn;
 
 	public BenhNhan() {
 		setBackground(new Color(240, 240, 240));
@@ -183,6 +186,40 @@ public class BenhNhan extends JPanel {
 		pnMenuBar.add(pnModify);
 		pnMenuBar.add(pnDelete);
 		
+		JPanel pnXuat = new JPanel();
+		pnXuat.setBackground(Color.WHITE);
+		pnXuat.setBounds(229, 11, 67, 71);
+		pnMenuBar.add(pnXuat);
+		
+		JLabel lblIconXuat = new JLabel("");
+		lblIconXuat.setIcon(new ImageIcon(BenhNhan.class.getResource("/Entity/1.png")));
+		
+		JLabel lblXuat = new JLabel("Xuất");
+		lblXuat.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		GroupLayout gl_pnXuat = new GroupLayout(pnXuat);
+		gl_pnXuat.setHorizontalGroup(
+			gl_pnXuat.createParallelGroup(Alignment.TRAILING)
+				.addGap(0, 67, Short.MAX_VALUE)
+				.addGroup(gl_pnXuat.createSequentialGroup()
+					.addGap(20)
+					.addComponent(lblIconXuat)
+					.addContainerGap(27, Short.MAX_VALUE))
+				.addGroup(gl_pnXuat.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblXuat, GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
+		);
+		gl_pnXuat.setVerticalGroup(
+			gl_pnXuat.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 71, Short.MAX_VALUE)
+				.addGroup(gl_pnXuat.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblIconXuat)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblXuat)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		pnXuat.setLayout(gl_pnXuat);
+		
 		addRow("001", "Nguyễn Văn A", "Nam", "01/01/1990", "Hà Nội");
         addRow("002", "Trần Thị B", "Nữ", "02/02/1995", "Đà Nẵng");
         addRow("001", "Nguyễn Văn A", "Nam", "01/01/1990", "Hà Nội");
@@ -199,9 +236,20 @@ public class BenhNhan extends JPanel {
         addRow("002", "Trần Thị B", "Nữ", "02/02/1995", "Đà Nẵng");
 	}
 	
+	// test them du lieu thu cong
 	public void addRow(String maBenhNhan, String tenBenhNhan, String gioiTinh, String ngaySinh, String diaChi) {
         model.addRow(new Object[] { maBenhNhan, tenBenhNhan, gioiTinh, ngaySinh, diaChi });
-    }
+	}
+	
+	// load du lieu tu database
+	public void loadDataTable(ArrayList<BenhNhanDTO> result) {
+		model.setRowCount(0);
+		for(BenhNhanDTO bn : result) {
+			model.addRow(new Object[] {bn.getMabn(), bn.getTenbn(),
+					bn.getGioitinh(), bn.getNgaysinh(), bn.getDiachi()
+			});
+		}
+	}
 	
 	public void eventMouse(JPanel pn, int i) {
 		pn.addMouseListener(new MouseAdapter() {
@@ -211,7 +259,6 @@ public class BenhNhan extends JPanel {
         		pn.setForeground(Color.gray);
             }
             
-            // xu ly xu kien bam nut dang nhap
             @Override
             public void mousePressed(MouseEvent evt) {
                 try {
@@ -231,23 +278,14 @@ public class BenhNhan extends JPanel {
 	
 	public void pnlLogInMousePressed(java.awt.event.MouseEvent evt, int i) throws UnsupportedLookAndFeelException {
         if(i == 1) {
-        	addbn = new AddBenhNhan();
-        	addbn.setVisible(true);
+        	addbn = new AddBenhNhan("them", "THÊM BỆNH NHÂN");
+        	//addbn.setVisible(true);
+        	
         }else if(i == 2) {
-        	mdfbn = new MdfBenhNhan();
-        	mdfbn.setVisible(true);
+        	addbn = new AddBenhNhan("sua", "SỬA BỆNH NHÂN");
+        	addbn.setVisible(true);
         }else if(i == 3) {
         	
         }
     }
-	
-//	private void pnlLogInMouseEntered(java.awt.event.MouseEvent evt, JPanel pn) {
-//		pn.setBackground(FontColor);
-//		pn.setForeground(Color.gray);
-//    }
-//
-//    private void pnlLogInMouseExited(java.awt.event.MouseEvent evt, JPanel pn) {
-//    	pn.setBackground(Color.white);
-//    	pn.setForeground(Color.white);
-//    }
 }

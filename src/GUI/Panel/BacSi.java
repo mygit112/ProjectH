@@ -213,12 +213,12 @@ public class BacSi extends JPanel {
 	public void pnlLogInMousePressed(java.awt.event.MouseEvent evt, int i) throws UnsupportedLookAndFeelException {
         if(i == 1) {
         	// them bac si
-        	addbs = new AddBacSi();
+        	addbs = new AddBacSi("them", "THÊM BÁC SĨ");
         	addbs.setVisible(true);
         }else if(i == 2) {
         	// sua bac su
-//        	mdfbn = new MdfBenhNhan();
-//        	mdfbn.setVisible(true);
+        	addbs = new AddBacSi("sua", "SỬA BÁC SĨ");
+        	addbs.setVisible(true);
         }else if(i == 3) {
         	// xoa bac si
         	
