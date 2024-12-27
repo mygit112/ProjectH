@@ -43,7 +43,7 @@ public class Main extends JFrame {
 	
 	public Main(TaiKhoanDTO tkDTO) {
 		this.setTitle("Hệ thống quản lý khám chữa bệnh");
-		//this.setUndecorated(true);
+		this.setUndecorated(true);
 		
 		mt = new MenuTaskbar(tkDTO);
 		
