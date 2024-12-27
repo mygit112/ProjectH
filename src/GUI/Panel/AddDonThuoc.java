@@ -28,7 +28,6 @@ import java.util.stream.Stream;
 import GUI.Login;
 import GUI.component.SelectForm;
 import GUI.component.Text;
-import GUI.component.sexCustom;
 
 public class AddDonThuoc extends JFrame {
 

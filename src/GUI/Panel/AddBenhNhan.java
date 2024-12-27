@@ -12,10 +12,8 @@ import DAO.BenhNhanDAO;
 import DTO.BenhNhanDTO;
 import DTO.TaiKhoanDTO;
 import GUI.Login;
-import GUI.component.DateCustom;
 import GUI.component.SelectForm;
 import GUI.component.Text;
-import GUI.component.sexCustom;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -39,8 +37,7 @@ public class AddBenhNhan extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private Text tHoten, tTuoi, tTrieuchung, tBHYT, tDiachi, tSDT, tCannang;
-	private DateCustom tChieucao;
+	private Text tHoten, tTuoi, tTrieuchung, tBHYT, tDiachi, tSDT, tChieucao, tCannang;
 	Color FontColor = new Color(96, 125, 139);
 	private JLabel lblTitle;
 	private JLabel lblAdd_Save;
@@ -202,7 +199,7 @@ public class AddBenhNhan extends JFrame {
 		cbxGioitinh.setBounds(528, 59, 200, 37);
 		panel_1.add(cbxGioitinh);
 		
-		tChieucao = new DateCustom();
+		tChieucao = new Text();
 		tChieucao.setBounds(10, 274, 200, 37);
 		panel_1.add(tChieucao);
 		

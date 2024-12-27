@@ -17,7 +17,6 @@ import DTO.TaiKhoanDTO;
 import GUI.Login;
 import GUI.component.SelectForm;
 import GUI.component.Text;
-import GUI.component.sexCustom;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -38,7 +37,6 @@ public class AddBacSi extends JFrame {
 	private Text tHoten, tDiachi, tEmail, tSDT, tUsername;
 	private JLabel lblName;
 	private JLabel lblSex;
-	private sexCustom sex;
 	Color FontColor = new Color(96, 125, 139);
 	private JLabel lblTitile;
 	private JLabel lblAdd_Save;
