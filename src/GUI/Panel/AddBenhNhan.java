@@ -18,6 +18,8 @@ import GUI.component.Text;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Window;
@@ -47,20 +49,6 @@ public class AddBenhNhan extends JFrame {
 	private BenhNhan bn;
 	private BenhNhanDTO bnDTOa;
 	private TaiKhoanDTO tkDTO;
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					// AddBenhNhan frame = new AddBenhNhan();
-				//	frame.setVisible(true);
-					// frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public AddBenhNhan(TaiKhoanDTO tkDTO, BenhNhanDTO bnDTOa, BenhNhanBUS bnBUS, BenhNhan bn, String type, String title) {
 		this.tkDTO = tkDTO;
@@ -319,63 +307,100 @@ public class AddBenhNhan extends JFrame {
 	public void addOrCanCel(int i) {
 		if(i == 1) {
 			// them
-			int id = BenhNhanDAO.getInstance().getAutoIncrement();
-			String txtHoten = tHoten.getText();
-			int txtTuoi = Integer.parseInt(tTuoi.getText());
-			int txtGioitinh;
-			String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
-			if (gioitinhChon.equals("Nam")) {
-			    txtGioitinh = 1; // Nam = 1
-			} else if (gioitinhChon.equals("Nữ")) {
-			    txtGioitinh = 0; // Nữ = 0
-			} else {
-			    txtGioitinh = -1;
+			if(validForm()) {
+				int id = BenhNhanDAO.getInstance().getAutoIncrement();
+				String txtHoten = tHoten.getText();
+				int txtTuoi = Integer.parseInt(tTuoi.getText());
+				int txtGioitinh;
+				String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
+				if (gioitinhChon.equals("Nam")) {
+				    txtGioitinh = 1; // Nam = 1
+				} else if (gioitinhChon.equals("Nữ")) {
+				    txtGioitinh = 0; // Nữ = 0
+				} else {
+				    txtGioitinh = -1;
+				}
+				String txtBHYT = tBHYT.getText();
+				String txtDiachi = tDiachi.getText();
+				String txtSDT = tSDT.getText();
+				int txtChieucao = Integer.parseInt(tChieucao.getText());
+				int txtCannang = Integer.parseInt(tCannang.getText());
+				String txtTrieuchung = tTrieuchung.getText();
+				Date currentDate = new Date(System.currentTimeMillis());			
+				BenhNhanDTO bn = new BenhNhanDTO(id, txtHoten, txtTuoi, txtGioitinh, txtBHYT, txtDiachi, txtSDT, txtChieucao, txtCannang, currentDate, txtTrieuchung, "", "", null, tkDTO.getManv(), 1);
+				BenhNhanDAO.getInstance().insert(bn);
+				bnBUS.insertBN(bn);
+				bnBUS.loadTable();
+				this.setVisible(false);
 			}
-			String txtBHYT = tBHYT.getText();
-			String txtDiachi = tDiachi.getText();
-			String txtSDT = tSDT.getText();
-			int txtChieucao = Integer.parseInt(tChieucao.getText());
-			int txtCannang = Integer.parseInt(tCannang.getText());
-			String txtTrieuchung = tTrieuchung.getText();
-			Date currentDate = new Date(System.currentTimeMillis());			
-			BenhNhanDTO bn = new BenhNhanDTO(id, txtHoten, txtTuoi, txtGioitinh, txtBHYT, txtDiachi, txtSDT, txtChieucao, txtCannang, currentDate, txtTrieuchung, "", "", null, tkDTO.getManv(), 1);
-			BenhNhanDAO.getInstance().insert(bn);
-			bnBUS.insertBN(bn);
-			bnBUS.loadTable();
-			this.setVisible(false);
 		}else if(i == 2) {
 			// huy bo
 			this.setVisible(false);
 			dispose();
 		}else if(i == 3) {
-			// luu thong tin da chinh sua
-			//System.out.println("meo");			//System.out.println(bnDTOa.getHoten());
+			// luu thong tin da chinh sua			//System.out.println(bnDTOa.getHoten());
 			// int id = BenhNhanDAO.getInstance().getAutoIncrement();
-			String txtHoten = tHoten.getText();
-			int txtTuoi = Integer.parseInt(tTuoi.getText());
-			int txtGioitinh;
-			String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
-			if (gioitinhChon.equals("Nam")) {
-			    txtGioitinh = 1; // Nam = 1
-			} else if (gioitinhChon.equals("Nữ")) {
-			    txtGioitinh = 0; // Nữ = 0
-			} else {
-			    txtGioitinh = -1;
+			if(validForm()) {
+				String txtHoten = tHoten.getText();
+				int txtTuoi = Integer.parseInt(tTuoi.getText());
+				int txtGioitinh;
+				String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
+				if (gioitinhChon.equals("Nam")) {
+				    txtGioitinh = 1; // Nam = 1
+				} else if (gioitinhChon.equals("Nữ")) {
+				    txtGioitinh = 0; // Nữ = 0
+				} else {
+				    txtGioitinh = -1;
+				}
+				String txtBHYT = tBHYT.getText();
+				String txtDiachi = tDiachi.getText();
+				String txtSDT = tSDT.getText();
+				int txtChieucao = Integer.parseInt(tChieucao.getText());
+				int txtCannang = Integer.parseInt(tCannang.getText());
+				String txtTrieuchung = tTrieuchung.getText();
+				Date currentDate = new Date(System.currentTimeMillis());
+				//System.out.println(tkDTO.getManv());
+				BenhNhanDTO bnDTO = new BenhNhanDTO(bnDTOa.getMabn(), txtHoten, txtTuoi, txtGioitinh, txtBHYT, txtDiachi, txtSDT, txtChieucao, txtCannang, currentDate, txtTrieuchung, "", "", null, tkDTO.getManv(), 1);
+				BenhNhanDAO.getInstance().update(bnDTO);
+				bnBUS.listBN.set(bnBUS.getIndex(), bnDTO);
+				bnBUS.loadTable();
+				this.setVisible(false);
+				dispose();
 			}
-			String txtBHYT = tBHYT.getText();
-			String txtDiachi = tDiachi.getText();
-			String txtSDT = tSDT.getText();
-			int txtChieucao = Integer.parseInt(tChieucao.getText());
-			int txtCannang = Integer.parseInt(tCannang.getText());
-			String txtTrieuchung = tTrieuchung.getText();
-			Date currentDate = new Date(System.currentTimeMillis());
-			//System.out.println(tkDTO.getManv());
-			BenhNhanDTO bnDTO = new BenhNhanDTO(bnDTOa.getMabn(), txtHoten, txtTuoi, txtGioitinh, txtBHYT, txtDiachi, txtSDT, txtChieucao, txtCannang, currentDate, txtTrieuchung, "", "", null, tkDTO.getManv(), 1);
-			BenhNhanDAO.getInstance().update(bnDTO);
-			bnBUS.listBN.set(bnBUS.getIndex(), bnDTO);
-			bnBUS.loadTable();
-			this.setVisible(false);
-			dispose();
 		}
+	}
+	
+	public boolean validForm() {
+	    try {
+	        if (tHoten.getText().equals("") || tTuoi.getText().equals("") || cbxGioitinh.getSelectedIndex() == 0 ||
+	                tDiachi.getText().equals("") || tSDT.getText().equals("") || tChieucao.getText().equals("") ||
+	                tCannang.getText().equals("") || tTrieuchung.getText().equals("")) {
+	            JOptionPane.showMessageDialog(null, "Bạn chưa nhập đầy đủ thông tin!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+
+	        int txtTuoi = Integer.parseInt(tTuoi.getText());
+	        if (txtTuoi <= 0) {
+	            JOptionPane.showMessageDialog(null, "Tuổi phải là một số hợp lệ!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+
+	        int chieucao = Integer.parseInt(tChieucao.getText());
+	        int cannang = Integer.parseInt(tCannang.getText());
+	        if (chieucao <= 0 || cannang <= 0) {
+	            JOptionPane.showMessageDialog(null, "Chiều cao và cân nặng phải là một số hợp lệ!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+
+	        if (!tSDT.getText().matches("\\d{10}")) {
+	            JOptionPane.showMessageDialog(null, "Số điện thoại phải gồm 10 chữ số!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+
+	    } catch (Exception e) {
+	        JOptionPane.showMessageDialog(null, "Thông tin nhập không hợp lệ!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    return true;
 	}
 }

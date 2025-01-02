@@ -46,7 +46,7 @@ public class MenuComponent {
 	
 	public Icon toIcon() {
 		// return new ImageIcon(getClass().getResource("C:\\Users\\Admin\\Desktop\\doctor.png"));
-		return new ImageIcon(getClass().getResource("/Entity/" + icon + ".png"));
+		return new ImageIcon(getClass().getResource("/img/" + icon + ".png"));
 	}
 	
 	

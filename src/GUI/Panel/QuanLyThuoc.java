@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.table.DefaultTableModel;
@@ -58,9 +59,18 @@ public class QuanLyThuoc extends JPanel implements ActionListener, KeyListener, 
 	private ArrayList<QuanLyThuocDTO> listqlt = qltBUS.getListqlt();
 	private TaiKhoanDTO tkDTO;
 	private IntegratedSearch search;
+	private JTabbedPane tabbledPane;
 	
 	public QuanLyThuoc(TaiKhoanDTO tkDTO) {
 		this.tkDTO = tkDTO;
+		
+		
+//		tabbledPane = new JTabbedPane();
+//		tabbledPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+//		tabbledPane.setFont(new Font("Tahoma", Font.PLAIN, 28));
+//		tabbledPane.setOpaque(false);
+//		tabbledPane.addTab("Tổng quan", this);
+		
 		
 		setBackground(new Color(240, 240, 240));
 		setBounds(220, 0, 1130, 729);
@@ -96,7 +106,7 @@ public class QuanLyThuoc extends JPanel implements ActionListener, KeyListener, 
 		pnAdd.setBackground(Color.WHITE);
 		
 		JLabel lblIconAdd = new JLabel("");
-		lblIconAdd.setIcon(new ImageIcon(QuanLyThuoc.class.getResource("/Entity/add.png")));
+		lblIconAdd.setIcon(new ImageIcon(QuanLyThuoc.class.getResource("/img/add.png")));
 		
 		JLabel lblAdd = new JLabel("Thêm");
 		lblAdd.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -106,7 +116,7 @@ public class QuanLyThuoc extends JPanel implements ActionListener, KeyListener, 
 		pnModify.setBackground(Color.WHITE);
 		
 		JLabel lblModifyIcon = new JLabel("");
-		lblModifyIcon.setIcon(new ImageIcon(QuanLyThuoc.class.getResource("/Entity/pencil.png")));
+		lblModifyIcon.setIcon(new ImageIcon(QuanLyThuoc.class.getResource("/img/pencil.png")));
 		
 		JLabel lblModify = new JLabel("Sửa");
 		lblModify.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -136,7 +146,7 @@ public class QuanLyThuoc extends JPanel implements ActionListener, KeyListener, 
 		pnDelete.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblDeleteIcon = new JLabel("");
-		lblDeleteIcon.setIcon(new ImageIcon(QuanLyThuoc.class.getResource("/Entity/delete.png")));
+		lblDeleteIcon.setIcon(new ImageIcon(QuanLyThuoc.class.getResource("/img/delete.png")));
 		pnDelete.add(lblDeleteIcon);
 		pnDelete.add(lblDelete);
 		

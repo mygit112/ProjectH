@@ -53,7 +53,6 @@ public class LichSuKham extends JPanel implements ActionListener, KeyListener, P
 	private Table table;
 	private DefaultTableModel model;
 	Color FontColor = new Color(96, 125, 139);
-	private SearchBar searchBar;
 	private AddBenhNhan adbn;
 	BenhNhanBUS bnBUS = new BenhNhanBUS(this);
 	BenhNhanDTO bnDTO = new BenhNhanDTO();

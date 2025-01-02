@@ -10,7 +10,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
@@ -66,6 +65,10 @@ public class InputDate extends JPanel {
     public void setDisable() {
         JTextFieldDateEditor editor = (JTextFieldDateEditor) date.getDateEditor();
         editor.setEditable(false);
+    }
+    
+    public void setMinSelectableDate(Date date) {
+        this.date.setMinSelectableDate(date);
     }
 }
 

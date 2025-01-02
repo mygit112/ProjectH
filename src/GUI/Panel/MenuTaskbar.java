@@ -18,10 +18,8 @@ import Model.EventMenuSelected;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import java.awt.Font;
-import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class MenuTaskbar extends JPanel {
 
@@ -57,7 +55,7 @@ public class MenuTaskbar extends JPanel {
 		add(panel1);
 		
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon(MenuTaskbar.class.getResource("/Entity/doctor.png")));
+		lblNewLabel.setIcon(new ImageIcon(MenuTaskbar.class.getResource("/img/doctor.png")));
 		
 		if(bsDTO == null) {
 			this.bsDTO = new BacSiDTO();
@@ -66,10 +64,11 @@ public class MenuTaskbar extends JPanel {
 			lblName.setForeground(Color.WHITE);
 			lblName.setFont(new Font("SansSerif", Font.BOLD, 16));
 		}else {
-			lblName = new JLabel(bsDTO.getTenbs());
-			lblName.setForeground(Color.WHITE);
-			lblName.setFont(new Font("SansSerif", Font.BOLD, 16));
+			
 		}
+		lblName = new JLabel(bsDTO.getTenbs());
+		lblName.setForeground(Color.WHITE);
+		lblName.setFont(new Font("SansSerif", Font.BOLD, 16));
 		// để 3 dong code ở else xuống dưới để mở design
 		
 		lblPhanQuyen = new JLabel(tkDTO.getPhanQuyen() == 1 ? "Admin" : "Bác sĩ");
@@ -117,30 +116,12 @@ public class MenuTaskbar extends JPanel {
 	
 	@Override
 	protected void paintChildren(Graphics g) {
-	    // Chuyển sang Graphics2D để sử dụng các tính năng vẽ nâng cao
 	    Graphics2D g2 = (Graphics2D) g;
-	    
-	    // Thiết lập hiệu ứng Anti-aliasing để vẽ mượt mà
 	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    
-	    // Vẽ gradient màu (nếu bạn muốn giữ gradient màu) hoặc bỏ đi để giữ màu mặc định
-	    // Nếu bạn không muốn gradient mà chỉ muốn màu nền mặc định, bạn có thể bỏ qua GradientPaint và chỉ vẽ lại panel như bình thường.
-	    // Nếu bạn không muốn gradient, xóa 2 dòng dưới và gọi super.paintChildren(g) ngay lập tức.
 	    GradientPaint gp = new GradientPaint(0, 0, Color.decode("#1CB5E0"), 0, getHeight(), Color.decode("#000046"));
 	    g2.setPaint(gp);
-	    
-	    // Nếu bạn muốn giữ lại gradient nền, hãy bỏ bo góc và vẽ lại chỉ gradient
-	    g2.fillRect(0, 0, getWidth(), getHeight()); // Vẽ lại nền mà không có bo góc
-
-	    // Bỏ phần bo góc và không vẽ thêm các chi tiết thừa nữa
-	    // Bạn không cần gọi g2.fillRoundRect nữa vì bo góc đã bị bỏ
-	    
-	    // Vẽ các thành phần con của panel
+	    g2.fillRect(0, 0, getWidth(), getHeight());
 	    super.paintChildren(g); 
 	}
 
-	
-	public void getNameBS() {
-		
-	}
 }

@@ -54,10 +54,6 @@ public class writePDF {
     BacSiBUS bsBUS = new BacSiBUS();
     private ArrayList<String> listTenThuoc, listGhiChu;
     private ArrayList<Integer> listSoNgay, listSang, listTrua, listToi, listSoLuong;
-    
-//    DungLuongRomBUS romBus = new DungLuongRomBUS();
-//    DungLuongRamBUS ramBus = new DungLuongRamBUS();
-//    MauSacBUS mausacBus = new MauSacBUS();
 
     public writePDF() {
         try {

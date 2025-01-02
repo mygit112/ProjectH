@@ -21,6 +21,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+
 import java.awt.GridBagLayout;
 import java.awt.RenderingHints;
 import java.awt.FlowLayout;
@@ -44,6 +46,8 @@ public class Main extends JFrame {
 	public Main(TaiKhoanDTO tkDTO) {
 		this.setTitle("Hệ thống quản lý khám chữa bệnh");
 		this.setUndecorated(true);
+		ImageIcon icon = new ImageIcon("/img/logo.png");
+		this.setIconImage(icon.getImage());
 		
 		mt = new MenuTaskbar(tkDTO);
 		
@@ -51,7 +55,7 @@ public class Main extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1386, 768);
 		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		//contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(null);
 		contentPane.add(mt);
 		mt.setLayout(null);
@@ -98,7 +102,7 @@ public class Main extends JFrame {
 		
 		pnMain = new JPanel();
 		pnMain.setOpaque(false);
-		pnMain.setBounds(240, 0, 1130, 729);
+		pnMain.setBounds(240, 0, 1132, 768);
 		contentPane.add(pnMain);
 		pnMain.setLayout(new BorderLayout(0, 0));
 		this.setLocationRelativeTo(null);

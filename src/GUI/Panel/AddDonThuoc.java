@@ -1,7 +1,5 @@
 package GUI.Panel;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -9,13 +7,14 @@ import javax.swing.border.EmptyBorder;
 
 import BUS.QuanLyThuocBUS;
 import DAO.QuanLyThuocDAO;
-import DTO.BenhNhanDTO;
 import DTO.QuanLyThuocDTO;
 
 import java.awt.Color;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -46,19 +45,6 @@ public class AddDonThuoc extends JFrame {
 	private QuanLyThuocBUS qltBUS = new QuanLyThuocBUS();
 	private QuanLyThuocDTO qltDTO;
 	private QuanLyThuoc qlt;
-	
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					AddDonThuoc frame = new AddDonThuoc("sua", "TÊN THUỐC");
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	public AddDonThuoc(QuanLyThuocDTO qltDTO, QuanLyThuocBUS qltBUS, QuanLyThuoc qlt, String type, String title) {
 		this.qltDTO = qltDTO;
@@ -271,38 +257,90 @@ public class AddDonThuoc extends JFrame {
 	public void addOrCanCel(int i) {
 		if(i == 1) {
 			// them thuoc bai bang (chua code)
-			int mathuoc = QuanLyThuocDAO.getInstance().getAutoIncrement();
-			String tenthuoc = tTenthuoc.getText();
-			String donvitinh = tDonvi.getText();
-			double gia = Double.parseDouble(tGia.getText());
-			String nhomthuoc = (String) cbxNhomThuoc.getSelectedItem();
-			int soluong = Integer.parseInt(tSoluong.getText());
-			QuanLyThuocDTO qlt = new QuanLyThuocDTO(mathuoc, tenthuoc, donvitinh, gia, nhomthuoc, soluong, 1);
-			QuanLyThuocDAO.getInstance().insert(qlt);
-			qltBUS.insertThuoc(qlt);;
-			qltBUS.loadTable();
-			this.setVisible(false);
-			dispose();
+			if (validForm()) {
+				int mathuoc = QuanLyThuocDAO.getInstance().getAutoIncrement();
+				String tenthuoc = tTenthuoc.getText();
+				String donvitinh = tDonvi.getText();
+				double gia = Double.parseDouble(tGia.getText());
+				String nhomthuoc = (String) cbxNhomThuoc.getSelectedItem();
+				int soluong = Integer.parseInt(tSoluong.getText());
+				QuanLyThuocDTO qlt = new QuanLyThuocDTO(mathuoc, tenthuoc, donvitinh, gia, nhomthuoc, soluong, 1);
+				QuanLyThuocDAO.getInstance().insert(qlt);
+				qltBUS.insertThuoc(qlt);;
+				qltBUS.loadTable();
+				this.setVisible(false);
+				dispose();
+			}
 		}else if(i == 2) {
 			// huy bo viec them
 			this.setVisible(false);
 			dispose();
 		}else if(i == 3) {
 			// thuc hien thay doi thong tin trong bang
-			System.out.println(qltDTO.getTenthuoc());
-			String tenthuoc = tTenthuoc.getText();
-			String donvitinh = tDonvi.getText();
-			double gia = Double.parseDouble(tGia.getText());
-			String nhomthuoc = (String) cbxNhomThuoc.getSelectedItem();
-			int soluong = Integer.parseInt(tSoluong.getText());
-			QuanLyThuocDTO qlt = new QuanLyThuocDTO(qltDTO.getMathuoc(), tenthuoc, donvitinh, gia, nhomthuoc, soluong, 1);
-			QuanLyThuocDAO.getInstance().update(qlt);
-			qltBUS.listqlt.set(qltBUS.getIndex(), qlt);
-			qltBUS.loadTable();
-			this.setVisible(false);
-			dispose();
+			//System.out.println(qltDTO.getTenthuoc());
+			if(validForm()) {
+				String tenthuoc = tTenthuoc.getText();
+				String donvitinh = tDonvi.getText();
+				double gia = Double.parseDouble(tGia.getText());
+				String nhomthuoc = (String) cbxNhomThuoc.getSelectedItem();
+				int soluong = Integer.parseInt(tSoluong.getText());
+				QuanLyThuocDTO qlt = new QuanLyThuocDTO(qltDTO.getMathuoc(), tenthuoc, donvitinh, gia, nhomthuoc, soluong, 1);
+				QuanLyThuocDAO.getInstance().update(qlt);
+				qltBUS.listqlt.set(qltBUS.getIndex(), qlt);
+				qltBUS.loadTable();
+				this.setVisible(false);
+				dispose();
+			}
 		}
 	}
+	
+	public boolean validForm() {
+	    // Kiểm tra tên thuốc không được để trống
+	    if (tTenthuoc.getText().trim().equals("")) {
+	        JOptionPane.showMessageDialog(null, "Tên thuốc không được để trống!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    // Kiểm tra đơn vị tính không được để trống
+	    if (tDonvi.getText().trim().equals("")) {
+	        JOptionPane.showMessageDialog(null, "Đơn vị tính không được để trống!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    // Kiểm tra giá thuốc phải là một số và lớn hơn 0
+	    try {
+	        double gia = Double.parseDouble(tGia.getText());
+	        if (gia <= 0) {
+	            JOptionPane.showMessageDialog(null, "Giá thuốc phải lớn hơn 0!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Giá thuốc không hợp lệ! Vui lòng nhập lại.", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    // Kiểm tra số lượng thuốc phải là một số nguyên và lớn hơn hoặc bằng 0
+	    try {
+	        int soluong = Integer.parseInt(tSoluong.getText());
+	        if (soluong < 0) {
+	            JOptionPane.showMessageDialog(null, "Số lượng thuốc phải lớn hơn hoặc bằng 0!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	            return false;
+	        }
+	    } catch (NumberFormatException e) {
+	        JOptionPane.showMessageDialog(null, "Số lượng thuốc không hợp lệ! Vui lòng nhập lại.", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    // Kiểm tra nhóm thuốc phải được chọn
+	    if (cbxNhomThuoc.getSelectedIndex() == 0 || cbxNhomThuoc.getSelectedItem().toString().equals("Chọn nhóm thuốc")) {
+	        JOptionPane.showMessageDialog(null, "Vui lòng chọn nhóm thuốc!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    // Nếu tất cả các kiểm tra đều hợp lệ
+	    return true;
+	}
+
 	
 	public void loadDataTable(ArrayList<QuanLyThuocDTO> result) {
 		ql.model.setRowCount(0);

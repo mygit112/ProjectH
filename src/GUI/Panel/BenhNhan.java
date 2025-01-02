@@ -8,30 +8,27 @@ import javax.swing.UnsupportedLookAndFeelException;
 import GUI.Login;
 import GUI.component.InputDate;
 import GUI.component.ScrollBar;
-import GUI.component.SelectForm;
 import GUI.component.SuggestionPopup;
 import GUI.component.Table;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Panel;
 
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
+
+import com.toedter.calendar.JCalendar;
 
 import BUS.BenhNhanBUS;
 import BUS.QuanLyThuocBUS;
 import DAO.BenhNhanDAO;
+import DAO.QuanLyThuocDAO;
 import DTO.BenhNhanDTO;
 import DTO.QuanLyThuocDTO;
 import DTO.TaiKhoanDTO;
 
-import java.awt.SystemColor;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -41,18 +38,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 
 import GUI.component.Text;
 import Model.writePDF;
@@ -78,7 +73,7 @@ public class BenhNhan extends JPanel {
 	private JPanel pnNhapthuoc;
 	private JPanel pnXoathuoc;
 	private SuggestionPopup suggestionPopup;
-	private ArrayList<String> drugList;
+	private ArrayList<String> drugList = new ArrayList<String>();
 	private ArrayList<String> tenthuoc, ghichu;
 	private ArrayList<Integer> songay, sang, trua, toi, soluong;
 	private TaiKhoanDTO tkDTO;
@@ -144,7 +139,7 @@ public class BenhNhan extends JPanel {
 		pnSua.setBackground(Color.WHITE);
 		
 		JLabel lblModifyIcon = new JLabel("");
-		lblModifyIcon.setIcon(new ImageIcon(BenhNhan.class.getResource("/Entity/pencil.png")));
+		lblModifyIcon.setIcon(new ImageIcon(BenhNhan.class.getResource("/img/pencil.png")));
 		
 		JLabel lblModify = new JLabel("Sửa");
 		lblModify.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -153,13 +148,13 @@ public class BenhNhan extends JPanel {
 		pnXoa.setBackground(Color.WHITE);
 		
 		JLabel lblDeleteIcon = new JLabel("");
-		lblDeleteIcon.setIcon(new ImageIcon(BenhNhan.class.getResource("/Entity/delete.png")));
+		lblDeleteIcon.setIcon(new ImageIcon(BenhNhan.class.getResource("/img/delete.png")));
 		
 		JLabel lblDelete = new JLabel("Xoá");
 		lblDelete.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		
 		JLabel lblIconAdd = new JLabel("");
-		lblIconAdd.setIcon(new ImageIcon(BenhNhan.class.getResource("/Entity/add.png")));
+		lblIconAdd.setIcon(new ImageIcon(BenhNhan.class.getResource("/img/add.png")));
 		
 		JLabel lblAdd = new JLabel("Thêm");
 		lblAdd.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -184,7 +179,7 @@ public class BenhNhan extends JPanel {
 		pnLuu.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblDeleteIcon_1 = new JLabel("");
-		lblDeleteIcon_1.setIcon(new ImageIcon(BenhNhan.class.getResource("/Entity/save.png")));
+		lblDeleteIcon_1.setIcon(new ImageIcon(BenhNhan.class.getResource("/img/save.png")));
 		pnLuu.add(lblDeleteIcon_1);
 		
 		JLabel lblLuuw = new JLabel("Lưu");
@@ -197,7 +192,7 @@ public class BenhNhan extends JPanel {
 		pnKhamxong.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
 		JLabel lblModifyIcon_1 = new JLabel("");
-		lblModifyIcon_1.setIcon(new ImageIcon(BenhNhan.class.getResource("/Entity/complete.png")));
+		lblModifyIcon_1.setIcon(new ImageIcon(BenhNhan.class.getResource("/img/complete.png")));
 		pnKhamxong.add(lblModifyIcon_1);
 		
 		JLabel lblKhmXong = new JLabel("Khám xong");
@@ -209,7 +204,7 @@ public class BenhNhan extends JPanel {
 		pnMenuBar.add(pnXuatpdf);
 		
 		JLabel lblIconXuat = new JLabel("");
-		lblIconXuat.setIcon(new ImageIcon(BenhNhan.class.getResource("/Entity/pdf.png")));
+		lblIconXuat.setIcon(new ImageIcon(BenhNhan.class.getResource("/img/pdf.png")));
 		pnXuatpdf.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		pnXuatpdf.add(lblIconXuat);
 		
@@ -410,6 +405,9 @@ public class BenhNhan extends JPanel {
 		
 		// init jcalendar
 		Ngaytaikham = new InputDate();
+		Calendar currentCalendar = Calendar.getInstance();
+		Date currentDate = new Date(currentCalendar.getTimeInMillis());
+		Ngaytaikham.setMinSelectableDate(currentDate);
 		Ngaytaikham.getDateChooser().setBounds(0, 10, 211, 30);
 		Ngaytaikham.setBounds(112, 237, 211, 42);
 		pnThongTin.add(Ngaytaikham);
@@ -439,16 +437,9 @@ public class BenhNhan extends JPanel {
 //		String[] listqlt = qltBUS.getArrTenDangUong();
 //		listqlt = Stream.concat(Stream.of("Tất cả"), Arrays.stream(listqlt)).toArray(String[]::new);
 		
-		drugList = new ArrayList<>();
+		// drugList = new ArrayList<>();
 	    drugList.addAll(qltBUS.getArrTenThuoc());
-//		drugList.add("Paracetamol");
-//	        drugList.add("Ibuprofen");
-//	        drugList.add("Aspirin");
-//	        drugList.add("Amoxicillin");
-//	        drugList.add("Metformin");
-//	        drugList.add("Omeprazole");
 	     
-		
 		suggestionPopup = new SuggestionPopup(tTenthuoc);
 		
 		JLabel lblSNgy = new JLabel("Số ngày");
@@ -505,12 +496,10 @@ public class BenhNhan extends JPanel {
                 // Lọc danh sách tên thuốc theo chuỗi đã nhập
                 ArrayList<String> filteredDrugs = getFilteredDrugs(input);
                 suggestionPopup.showSuggestions(filteredDrugs);
+                
+                
             }
         });
-		
-		
-//		addRow(1, "Nguyen Van A", 30, 1, "Có", "Hà Nội", "0123456789", 1, 1, new Date(01/01/1990));
-//        addRow(1, "Nguyen Van A", 30, 1, "Có", "Hà Nội", "0123456789", 11, 61, new Date(01/01/1990));
 	}
 	
 	private ArrayList<String> getFilteredDrugs(String input) {
@@ -522,25 +511,6 @@ public class BenhNhan extends JPanel {
         }
         return filteredDrugs;
     }
-	
-	// test them du lieu thu cong
-//	public void addRow(int mabn, String hoten, int tuoi, int gioitinh, String bhyt, String diachi,
-//			String sdt, int chieucao, int cannang, Date ngaykham) {
-//        model.addRow(new Object[] { mabn, hoten, tuoi, gioitinh, bhyt, diachi, sdt, chieucao, cannang, ngaykham});
-//	}
-	
-	// load du lieu tu database
-//	public void loadDataTable(ArrayList<BenhNhanDTO> result) {
-//		model.setRowCount(0);
-//		for(BenhNhanDTO bn : result) {
-//			model.addRow(new Object[] {bn.getMabn(), bn.getHoten(),
-//					bn.getTuoi(), bn.getGioitinh(), bn.getBhyt(),
-//					bn.getDiachi(), bn.getSdt(), bn.getChieucao(),
-//					bn.getCannang(), bn.getNgaykham()
-//					
-//			});
-//		}
-//	}
 	
 	public void eventMouse(JPanel pn, int i, TaiKhoanDTO tkDTO) {
 		pn.addMouseListener(new MouseAdapter() {
@@ -632,9 +602,14 @@ public class BenhNhan extends JPanel {
         }else if(i == 6) {
         	// chuc nang xuat filde pdf
         	getDataThuoc();
-        	//System.out.println(bnDTO.getMabn());
-        	writePDF w = new writePDF();
-        	w.writePN(this, bnDTO, tkDTO);
+        	if(tChuandoan.getText().equals("") || tLoiDan.getText().equals("")) {
+        		JOptionPane.showMessageDialog(null, "Vui lòng nhập đầy đủ thông tin!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        		return;
+        	}else {
+        		writePDF w = new writePDF();
+            	w.writePN(this, bnDTO, tkDTO);
+        	}
+
         }else if(i == 7) {
         	// chuc nang nhap thuoc vao bang
         	AddDataTableThuoc();
@@ -642,8 +617,15 @@ public class BenhNhan extends JPanel {
         	// chuc nang xoa thuoc
         	int selected = tablethuoc.getSelectedRow();
     		if(selected == -1) {
-    			JOptionPane.showMessageDialog(null, "Vui lòng chọn một thuốc.", "Thông báo", JOptionPane.WARNING_MESSAGE);
+    			JOptionPane.showMessageDialog(null, "Vui lòng chọn một thuốc!", "Thông báo", JOptionPane.WARNING_MESSAGE);
     		}else {
+    			// trả lại số lượng thuốc ban đầu nếu huỷ
+    			int soluong = (int) modelthuoc.getValueAt(selected, 5);
+    			String tenthuoc = (String) modelthuoc.getValueAt(selected, 0);
+    			QuanLyThuocDTO qlt = new QuanLyThuocDTO();
+    			qlt.setTenthuoc(tenthuoc);
+    			QuanLyThuocDAO.getInstance().updateQuantityIfCancel(qlt, soluong);
+    			
     			modelthuoc.removeRow(selected);
     		}
         }
@@ -659,13 +641,13 @@ public class BenhNhan extends JPanel {
     	soluong = new ArrayList<Integer>();
 
     	for (int j = 0; j < tablethuoc.getRowCount(); j++) {
-    		String tenThuoc = (String) tablethuoc.getValueAt(j, 0); // Cột 0: Tên thuốc
-    	    String ghiChu = (String) tablethuoc.getValueAt(j, 6);  // Cột 1: Ghi chú
-    	    Integer soNgay = (Integer) tablethuoc.getValueAt(j, 1); // Cột 2: Số ngày
-    	    Integer sangValue = (Integer) tablethuoc.getValueAt(j, 2); // Cột 3: Sáng
-    	    Integer truaValue = (Integer) tablethuoc.getValueAt(j, 3); // Cột 4: Trưa
-    	    Integer toiValue = (Integer) tablethuoc.getValueAt(j, 4); // Cột 5: Tối
-    	    Integer soLuong = (Integer) tablethuoc.getValueAt(j, 5); // Cột 6: Số lượng
+    		String tenThuoc = (String) tablethuoc.getValueAt(j, 0);
+    	    String ghiChu = (String) tablethuoc.getValueAt(j, 6);
+    	    Integer soNgay = (Integer) tablethuoc.getValueAt(j, 1);
+    	    Integer sangValue = (Integer) tablethuoc.getValueAt(j, 2);
+    	    Integer truaValue = (Integer) tablethuoc.getValueAt(j, 3);
+    	    Integer toiValue = (Integer) tablethuoc.getValueAt(j, 4);
+    	    Integer soLuong = (Integer) tablethuoc.getValueAt(j, 5);
 
     	    // Thêm giá trị vào các ArrayList
     	    tenthuoc.add(tenThuoc);
@@ -729,7 +711,7 @@ public class BenhNhan extends JPanel {
 					String tuoi = Integer.toString(tuoiint);
 					String gioitinh = (String) table.getValueAt(selectedRow, 3);
 					Date ngaykhamDate = (Date) table.getValueAt(selectedRow, 9);
-					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");  // Định dạng ngày theo yêu cầu
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 					String ngaykham = dateFormat.format(ngaykhamDate);
 					
 					tHoten.setText(hoten);
@@ -749,7 +731,7 @@ public class BenhNhan extends JPanel {
 					System.out.println(chuandoan);
 					bnDTO.setChuandoan(chuandoan);
 					Date ngaytaikham = bnBUS.getNgayTaiKhamById(id);
-					System.out.println(ngaytaikham);
+					//System.out.println(ngaytaikham);
 					bnDTO.setNgaytaikham(ngaytaikham);
 					bnDTO.setBacsiid(tkDTO.getManv());
 				}
@@ -758,32 +740,105 @@ public class BenhNhan extends JPanel {
 	}
 	
 	public void AddDataTableThuoc() {
-		String tenthuoc = tTenthuoc.getText();
-		String ngaySuDungStr = tNgaysudung.getText();
-		int songaydung = validateThuoc(ngaySuDungStr);
-		String sangStr = tSang.getText();
-		int sang = validateThuoc(sangStr);
-		String truaStr = tTrua.getText();
-		int trua = validateThuoc(truaStr);
-		String toiStr = tToi.getText();
-		int toi = validateThuoc(toiStr);
-		int soluong = (sang + trua + toi) * songaydung;
-		String ghichu = tGhichu.getText();
-		modelthuoc.addRow(new Object[] {
-				tenthuoc, songaydung, sang, trua, toi, soluong, ghichu
-		});
+	    if (validFormThuoc()) {
+	        String tenthuoc = tTenthuoc.getText();
+	        // Kiểm tra thuốc đã tồn tại trong bảng chưa
+	        if (isThuocExists(tenthuoc)) {
+	            JOptionPane.showMessageDialog(null, "Tên thuốc đã tồn tại trong bảng!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	            return;
+	        }
+	        // Kiểm tra thuốc có tồn tại trong kho không
+	        if (!isThuocExistArr()) {
+	            return;
+	        }
+	        String ngaySuDungStr = tNgaysudung.getText();
+	        int songaydung = Integer.parseInt(ngaySuDungStr);
+	        String sangStr = tSang.getText();
+	        int sang = Integer.parseInt(sangStr);
+	        String truaStr = tTrua.getText();
+	        int trua = Integer.parseInt(truaStr);
+	        String toiStr = tToi.getText();
+	        int toi = Integer.parseInt(toiStr);
+	        int soluong = (sang + trua + toi) * songaydung;
+	        String ghichu = tGhichu.getText();
+	        // Thêm dữ liệu vào bảng
+	        modelthuoc.addRow(new Object[]{
+	                tenthuoc, songaydung, sang, trua, toi, soluong, ghichu
+	        });
+	        
+	        // cập nhật lại dữ liệu trong bảng thuốc
+	        QuanLyThuocDTO qlt = new QuanLyThuocDTO();
+        	drugList.addAll(qltBUS.getArrTenThuoc());
+        	//String tenthuoc = qltBUS.getNameById(drugList.indexOf(tTenthuoc.getText()));
+        	int mathuoc = drugList.indexOf(tTenthuoc.getText());
+        	int soluongtru = soluong;
+        	qlt.setMathuoc(mathuoc + 1);
+        	//System.out.println("ma thuoc: "+ mathuoc + 1);
+        	QuanLyThuocDAO.getInstance().updateQuantity(qlt, soluongtru);
+	    }
+	}
+
+	// kiểm tra thuốc có tồn tại trong kho hay không
+	public boolean isThuocExistArr() {
+	    ArrayList<String> checkArr = new ArrayList<String>();
+	    checkArr.addAll(qltBUS.getArrTenThuoc());
+	    String tenthuoc = tTenthuoc.getText();
+	    // Kiểm tra tên thuốc tồn tại trong kho
+	    boolean check = compareWithArrayList(checkArr, tenthuoc);
+	    if (!check) {
+	        JOptionPane.showMessageDialog(null, "Thuốc không tồn tại trong kho!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	    }
+
+	    return check;
 	}
 	
-	public int validateThuoc(String value) {
-		int result = 0;
+	public static boolean compareWithArrayList(ArrayList<String> list, String inputString) {
+        for (String element : list) {
+            if (element.equals(inputString)) {
+                return true;
+            }
+        }
+        return false;
+    }
+	
+	// kiểm tra thuốc thêm vào có trùng lặp với thuốc đã thêm trước đó hay không
+	public boolean isThuocExists(String tenthuoc) {
+	    for (int i = 0; i < modelthuoc.getRowCount(); i++) {
+	        String existingTenThuoc = (String) modelthuoc.getValueAt(i, 0);
+	        if (existingTenThuoc.equalsIgnoreCase(tenthuoc)) {
+	            return true;
+	        }
+	    }
+	    return false;
+	}
+	
+	public boolean validFormThuoc() {
 		try {
-		    result = Integer.parseInt(value);
-		} catch (NumberFormatException e) {
-			if(tNgaysudung.getText() != "" || tSang.getText() != "" || tTrua.getText() != "" || tToi.getText() != "") {
-				JOptionPane.showMessageDialog(null, "Vui lòng nhập một số hợp lệ!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
-			}			
+			if(tTenthuoc.getText().equals("") || tNgaysudung.getText().equals("") ||
+					(tSang.getText().equals("") && tTrua.getText().equals("") && tToi.getText().equals("")) ||
+					tGhichu.getText().equals("")) {
+				JOptionPane.showMessageDialog(null, "Bạn chưa nhập đầy đủ thông tin!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}else {
+				if(tSang.getText().equals(""))
+					tSang.setText("0");
+				if(tTrua.getText().equals(""))
+					tTrua.setText("0");
+				if(tToi.getText().equals(""))
+					tToi.setText("0");
+			}
+			
+			int ngaydung = Integer.parseInt(tNgaysudung.getText());
+			if(ngaydung < 0) {
+				JOptionPane.showMessageDialog(null, "Số ngày dùng không âm!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+			
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Thông tin nhập không hợp lệ!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
 		}
-		return result;
+		return true;
 	}
 	
 	public ArrayList<String> getTenThuoc(){

@@ -1,7 +1,6 @@
 package GUI.Panel;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +18,8 @@ import GUI.component.SelectForm;
 import GUI.component.Text;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -299,70 +300,104 @@ public class AddBacSi extends JFrame {
 	public void addOrCanCel(int i) {
 		if(i == 1) {
 			// thuc hien chuc nang them bac si
-			int id = BacSiDAO.getInstance().getAutoIncrement();
-			String tenbs = tHoten.getText();
-			int gioitinh;
-			String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
-			if (gioitinhChon.equals("Nam")) {
-			    gioitinh = 1; // Nam = 1
-			} else if (gioitinhChon.equals("Nữ")) {
-			    gioitinh = 0; // Nữ = 0
-			} else {
-			    gioitinh = -1;
+			if(validForm()) {
+				int id = BacSiDAO.getInstance().getAutoIncrement();
+				String tenbs = tHoten.getText();
+				int gioitinh;
+				String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
+				if (gioitinhChon.equals("Nam")) {
+				    gioitinh = 1; // Nam = 1
+				} else if (gioitinhChon.equals("Nữ")) {
+				    gioitinh = 0; // Nữ = 0
+				} else {
+				    gioitinh = -1;
+				}
+				String diachi = tDiachi.getText();
+				String email = tEmail.getText();
+				String sdt = tSDT.getText();
+				String chuyenkhoa = (String) cbxChuyenkhoa.getSelectedItem();
+				String username = tUsername.getText();
+				char[] passwordchar = jPassword.getPassword();
+				String password = new String(passwordchar);
+				password = Model.BCrypt.hashpw(password, Model.BCrypt.gensalt(12));
+				
+				System.out.println(id);
+				
+				TaiKhoanDTO tk = new TaiKhoanDTO(id, username, password, 1, 0);
+				TaiKhoanDAO.getInstance().insert(tk);
+				
+				BacSiDTO bs = new BacSiDTO(id, tenbs, gioitinh, diachi, email, sdt, chuyenkhoa, 1);
+				BacSiDAO.getInstance().insert(bs);
+				bsBUS.insertBS(bs);
+				bsBUS.loadTable();
+				this.setVisible(false);
+				dispose();
 			}
-			String diachi = tDiachi.getText();
-			String email = tEmail.getText();
-			String sdt = tSDT.getText();
-			String chuyenkhoa = (String) cbxChuyenkhoa.getSelectedItem();
-			String username = tUsername.getText();
-			char[] passwordchar = jPassword.getPassword();
-			String password = new String(passwordchar);
-			password = Model.BCrypt.hashpw(password, Model.BCrypt.gensalt(12));
-			
-			System.out.println(id);
-			
-			TaiKhoanDTO tk = new TaiKhoanDTO(id, username, password, 1, 0);
-			TaiKhoanDAO.getInstance().insert(tk);
-			
-			BacSiDTO bs = new BacSiDTO(id, tenbs, gioitinh, diachi, email, sdt, chuyenkhoa, 1);
-			BacSiDAO.getInstance().insert(bs);
-			bsBUS.insertBS(bs);
-			bsBUS.loadTable();
-			this.setVisible(false);
 		}else if(i == 2) {
 			// thuc hien chuc nang huy bo viec them
 			this.setVisible(false);
 			dispose();
 		}else if(i == 3) {
-			// luu thong tin da sua(chua code)
-			String tenbs = tHoten.getText();
-			int gioitinh;
-			String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
-			if (gioitinhChon.equals("Nam")) {
-			    gioitinh = 1; // Nam = 1
-			} else if (gioitinhChon.equals("Nữ")) {
-			    gioitinh = 0; // Nữ = 0
-			} else {
-			    gioitinh = -1;
-			}
-			String diachi = tDiachi.getText();
-			String email = tEmail.getText();
-			String sdt = tSDT.getText();
-			String chuyenkhoa = (String) cbxChuyenkhoa.getSelectedItem();
-			BacSiDTO bs = new BacSiDTO(bsDTO.getId(), tenbs, gioitinh, diachi, email, sdt, chuyenkhoa, 1);
-			BacSiDAO.getInstance().update(bs);
+			// luu thong tin da sua
+			if(validForm()) {
+				String tenbs = tHoten.getText();
+				int gioitinh;
+				String gioitinhChon = (String) cbxGioitinh.getSelectedItem();
+				if (gioitinhChon.equals("Nam")) {
+				    gioitinh = 1; // Nam = 1
+				} else if (gioitinhChon.equals("Nữ")) {
+				    gioitinh = 0; // Nữ = 0
+				} else {
+				    gioitinh = -1;
+				}
+				String diachi = tDiachi.getText();
+				String email = tEmail.getText();
+				String sdt = tSDT.getText();
+				String chuyenkhoa = (String) cbxChuyenkhoa.getSelectedItem();
+				BacSiDTO bs = new BacSiDTO(bsDTO.getId(), tenbs, gioitinh, diachi, email, sdt, chuyenkhoa, 1);
+				BacSiDAO.getInstance().update(bs);
 
-			String username = tUsername.getText();
-			char[] passwordchar = jPassword.getPassword();
-			String password = new String(passwordchar);
-			password = Model.BCrypt.hashpw(password, Model.BCrypt.gensalt(12));
-			TaiKhoanDTO tk = new TaiKhoanDTO(bsDTO.getId(), username, password, 1, 0);
-			TaiKhoanDAO.getInstance().update(tk);
-			
-			bsBUS.listBS.set(bsBUS.getIndex(), bs);
-			bsBUS.loadTable();
-			this.setVisible(false);
-			dispose();
+				String username = tUsername.getText();
+				char[] passwordchar = jPassword.getPassword();
+				String password = new String(passwordchar);
+				password = Model.BCrypt.hashpw(password, Model.BCrypt.gensalt(12));
+				TaiKhoanDTO tk = new TaiKhoanDTO(bsDTO.getId(), username, password, 1, 0);
+				TaiKhoanDAO.getInstance().update(tk);
+				
+				bsBUS.listBS.set(bsBUS.getIndex(), bs);
+				bsBUS.loadTable();
+				this.setVisible(false);
+				dispose();
+			}
 		}
 	}
+	
+	public boolean validForm() {
+	    if (tHoten.getText().equals("") || cbxGioitinh.getSelectedIndex() == 0 || tDiachi.getText().equals("") || tEmail.getText().equals("") ||
+	        tSDT.getText().equals("") || cbxChuyenkhoa.getSelectedIndex() == 0 || tUsername.getText().equals("") || jPassword.getPassword().length == 0) {
+	        JOptionPane.showMessageDialog(null, "Bạn chưa nhập đầy đủ thông tin!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+	    
+	    String sdt = tSDT.getText();
+	    if (!sdt.matches("\\d{10,11}")) {
+	        JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ! Vui lòng nhập lại.", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    String email = tEmail.getText();
+	    if (!email.matches("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$")) {
+	        JOptionPane.showMessageDialog(null, "Email không hợp lệ! Vui lòng nhập lại.", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    String password = new String(jPassword.getPassword());
+	    if (password.length() < 6) {
+	        JOptionPane.showMessageDialog(null, "Mật khẩu phải có ít nhất 6 ký tự!", "Cảnh báo!", JOptionPane.ERROR_MESSAGE);
+	        return false;
+	    }
+
+	    return true;
+	}
+
 }

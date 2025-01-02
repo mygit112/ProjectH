@@ -61,6 +61,38 @@ public class QuanLyThuocDAO implements DAOInterface<QuanLyThuocDTO> {
 		}
 		return result;
 	}
+	
+	public int updateQuantity(QuanLyThuocDTO t, int soLuongTru) {
+		int result = 0;
+		try {
+			Connection conn = (Connection) JDBCConect.getConnection();
+			String sql = "UPDATE quanlythuoc SET soluong = soluong - ? WHERE mathuoc = ? AND soluong >= 0";
+			PreparedStatement pst = (PreparedStatement) conn.prepareStatement(sql);
+			pst.setInt(1, soLuongTru);
+			pst.setInt(2, t.getMathuoc());
+			result = pst.executeUpdate();
+			JDBCConect.closeConnection(conn);
+		} catch (SQLException e) {
+			Logger.getLogger(QuanLyThuocDAO.class.getName()).log(Level.SEVERE, null, e);
+		}
+		return result;
+	}
+	
+	public int updateQuantityIfCancel(QuanLyThuocDTO t, int soLuongCong) {
+		int result = 0;
+		try {
+			Connection conn = (Connection) JDBCConect.getConnection();
+			String sql = "UPDATE quanlythuoc SET soluong = soluong + ? WHERE tenthuoc = ? AND soluong >= 0";
+			PreparedStatement pst = (PreparedStatement) conn.prepareStatement(sql);
+			pst.setInt(1, soLuongCong);
+			pst.setString(2, t.getTenthuoc());
+			result = pst.executeUpdate();
+			JDBCConect.closeConnection(conn);
+		} catch (SQLException e) {
+			Logger.getLogger(QuanLyThuocDAO.class.getName()).log(Level.SEVERE, null, e);
+		}
+		return result;
+	}
 
 	@Override
 	public int delete(String t) {
@@ -129,6 +161,31 @@ public class QuanLyThuocDAO implements DAOInterface<QuanLyThuocDTO> {
 		return result;
 	}
 
+	public QuanLyThuocDTO selectedByName(String t) {
+		QuanLyThuocDTO result = null;
+		try {
+			Connection conn = (Connection) JDBCConect.getConnection();
+			String sql = "SELECT * FROM quanlythuoc WHERE tenthuoc=?";
+			PreparedStatement pst = (PreparedStatement) conn.prepareStatement(sql);
+			pst.setString(1, t);
+			ResultSet rs = (ResultSet) pst.executeQuery();
+			while(rs.next()) {
+				int mathuoc = rs.getInt("id");
+				String tenthuoc =  rs.getString("tenthuoc");
+				String donvitinh = rs.getString("donvitinh");
+				double gia = rs.getDouble("gia");
+				String nhomthuoc = rs.getString("nhomthuoc");
+				int soluong = rs.getInt("soluong");
+				int trangthai = rs.getInt("trangthai");
+				result = new QuanLyThuocDTO(mathuoc, tenthuoc, donvitinh, gia, nhomthuoc, soluong, trangthai);
+			}
+			JDBCConect.closeConnection(conn);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return result;
+	}
+	
 	@Override
 	public int getAutoIncrement() {
 		int result = -1;
@@ -149,5 +206,7 @@ public class QuanLyThuocDAO implements DAOInterface<QuanLyThuocDTO> {
 		}
 		return result;
 	}
+	
+	
 	
 }

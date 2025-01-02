@@ -43,7 +43,7 @@ public class Login extends JFrame implements KeyListener {
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		});
@@ -66,7 +66,7 @@ public class Login extends JFrame implements KeyListener {
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/Entity/login.png")));
+		lblNewLabel_2.setIcon(new ImageIcon(Login.class.getResource("/img/login.png")));
 		lblNewLabel_2.setBounds(0, 0, 500, 500);
 		panel.add(lblNewLabel_2);
 		

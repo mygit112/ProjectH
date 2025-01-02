@@ -53,6 +53,10 @@ public class QuanLyThuocBUS {
 		return qltDAO.selectById(id+"").getTenthuoc();
 	}
 	
+	public int getIdByName(String name) {
+		return qltDAO.selectedByName(name).getMathuoc();
+	}
+	
 //	public boolean delete(QuanLyThuocDTO qlt, int index) {
 //		boolean check = qltDAO.delete(Integer.toString(qlt.getMathuoc())) != 0;
 //		// ham delete phia tren chua code
@@ -68,14 +72,14 @@ public class QuanLyThuocBUS {
 		loadTable();
 	}
 	
-	public boolean update(QuanLyThuocDTO qlt) {
-		boolean check = qltDAO.update(qlt) != 0;
-		// ham update phia tren chua code
-		if(check) {
-			this.listqlt.set(getIndexByMaThuoc(qlt.getMathuoc()), qlt);
-		}
-		return check;
-	}
+//	public boolean update(QuanLyThuocDTO qlt) {
+//		boolean check = qltDAO.update(qlt) != 0;
+//		// ham update phia tren chua code
+//		if(check) {
+//			this.listqlt.set(getIndexByMaThuoc(qlt.getMathuoc()), qlt);
+//		}
+//		return check;
+//	}
 	
 	public int getIndexByMaThuoc(int mathuoc) {
 		int i = 0;

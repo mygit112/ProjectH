@@ -126,7 +126,7 @@ public class BacSi extends JPanel implements ActionListener, KeyListener, Proper
 		pnMenuBar.repaint();
 		
 		JLabel lblModifyIcon = new JLabel("");
-		lblModifyIcon.setIcon(new ImageIcon(BacSi.class.getResource("/Entity/pencil.png")));
+		lblModifyIcon.setIcon(new ImageIcon(BacSi.class.getResource("/img/pencil.png")));
 		
 		JLabel lblModify = new JLabel("Sửa");
 		lblModify.setFont(new Font("SansSerif", Font.PLAIN, 16));
@@ -136,13 +136,13 @@ public class BacSi extends JPanel implements ActionListener, KeyListener, Proper
 		pnDelete.setBackground(Color.WHITE);
 		
 		JLabel lblDeleteIcon = new JLabel("");
-		lblDeleteIcon.setIcon(new ImageIcon(BacSi.class.getResource("/Entity/delete.png")));
+		lblDeleteIcon.setIcon(new ImageIcon(BacSi.class.getResource("/img/delete.png")));
 		
 		JLabel lblDelete = new JLabel("Xoá");
 		lblDelete.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		
 		JLabel lblIconAdd = new JLabel("");
-		lblIconAdd.setIcon(new ImageIcon(BacSi.class.getResource("/Entity/add.png")));
+		lblIconAdd.setIcon(new ImageIcon(BacSi.class.getResource("/img/add.png")));
 		
 		JLabel lblAdd = new JLabel("Thêm");
 		lblAdd.setFont(new Font("SansSerif", Font.PLAIN, 16));
