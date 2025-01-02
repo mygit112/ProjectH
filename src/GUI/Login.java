@@ -90,9 +90,6 @@ public class Login extends JFrame implements KeyListener {
 		panel_2.add(txtUsername);
 		txtPassword = new LoginComponent("Mật khẩu", "password");
         panel_2.add(txtPassword);
-
-        txtUsername.setText("bacsi1");
-        //txtPassword.setText("123456");
 		
 		panel_3 = new JPanel();
 		panel_3.setBounds(620, 388, 291, 46);
